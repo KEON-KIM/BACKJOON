@@ -1,27 +1,23 @@
 #include<iostream>
-#include<string>
+#include<cstring>
 #include<vector>
 #include<queue>
 
 using namespace std;
 
-int N, M;
+int N, M, maxZero = 0;
 int board[8][8];
+int tmp[8][8];
 vector<pair<int, int>> virus;
 
 
-int bfs(int x, int y)
+void bfs(int x, int y, int &z)
 {
-	int tmp[8][8];
 	int dxdy[4][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
 	int dx, dy, result = 0;
 	queue<pair<int, int>> Que;
 
 	Que.push(make_pair(x,y));
-	//copy
-	for(int i = 0; i < N; i++)
-		for(int j = 0; j < M; j++)
-			tmp[i][j] = board[i][j];
 
 	while(!Que.empty())
 	{
@@ -37,19 +33,40 @@ int bfs(int x, int y)
 			if(dx < 0 || dy < 0 || dx >= N || dy >= M) continue;
 			if(tmp[dx][dy] != 0) continue;
 			tmp[dx][dy] = 2;
+			--z;
 			Que.push(make_pair(dx,dy));
 		}
 	}
-	// safe_check
-	for(int i = 0; i < N; i++)
-		for(int j = 0; j < M; j++)
-			if(tmp[i][j] == 0) result++;
-
-	return result;
 }
 
+void make_wall(int cnt, int &result) //  Memory Over...flow..
+{
+	if(cnt == 0)
+	{
+		int zeroCnt = maxZero - 3;
+		memcpy(tmp, board, sizeof(board));
+
+		for(int k = 0; k < virus.size(); k++)
+			bfs(virus[k].first, virus[k].second, zeroCnt);
+		if(result < zeroCnt) result = zeroCnt; 
+	}
+	else
+	{
+		for(int i = 0; i < N; i++)
+			for(int j = 0; j < M; j++)
+			{
+				if(!board[i][j]){
+					board[i][j] = 1;
+					make_wall(cnt-1, result);
+					board[i][j] = 0;
+				}
+			}
+	}
+}
 int main()
 {
+	int answer = 0;
+
 	cin >> N >> M;
 	for(int i = 0; i < N; i++)
 	{
@@ -57,9 +74,12 @@ int main()
 		{
 			cin >> board[i][j] ;
 			if(board[i][j] == 2) virus.push_back(make_pair(i,j));
+			if(board[i][j] == 0) maxZero++;
 		}
 	}
-	
-	bfs(virus[0].first, virus[0].second) << endl;// virus 
+
+	make_wall(3, answer);
+
+	cout << answer << endl;
 	return 0;
 }
