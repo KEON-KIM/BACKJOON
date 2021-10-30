@@ -5,10 +5,6 @@ using namespace std;
 int N;
 int arr[1001];
 
-void shift(int index){
-	arr[index+1] = arr[index];
-}
-
 int main()
 {
 	int k, i, j;
