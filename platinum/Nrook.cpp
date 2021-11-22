@@ -14,15 +14,16 @@ ll go(int n, int m, int k) {
     ret = 0;
     ret += go(n - 1, m, k);
     ret += go(n - 1, m - 1, k - 1) * m;
-    // ret += go(n - 1, m - 2, k - 2) * m * (m - 1) / 2;
-    // ret += go(n - 2, m - 1, k - 2) * m * (n - 1);
+    // kill each other rooks 
+    ret += go(n - 1, m - 2, k - 2) * m * (m - 1) / 2;
+    ret += go(n - 2, m - 1, k - 2) * m * (n - 1);
     ret %= mod;
     return ret;
 }
  
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    cin >> n >> k;
+    cin >> n >> m >> k;
     memset(dp, -1, sizeof(dp));
-    cout << go(n, n, k) << '\n';
+    cout << go(n, m, k) << '\n';
 }
