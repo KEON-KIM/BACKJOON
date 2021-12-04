@@ -1,3 +1,4 @@
+// #11559
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -7,7 +8,7 @@ using namespace std;
 
 vector<string> board;
 
-int arr[6], visited[12][6], judge[12][6], result = 0;
+int visited[12][6], judge[12][6], result = 0;
 void print()
 {
 	for(string str : board){
@@ -16,41 +17,41 @@ void print()
 	cout << endl;
 	}
 }
-void printArr()
+
+int Update()
 {
+	bool isDel = false;
 	for(int i = 0; i < 6; i++)
-		cout << arr[i] << ' ';
-	cout << endl;
-}
-
-
-void Update(int x, int y)
-{
-	printArr();
-	int start;
-	for(int i = 0; i < 6; i++){
-		if(arr[i] != 0)
+	{
+		int cursor = 11;
+		for(int j = 11; j >= 0; j--)
 		{
-			for(int j = x; j > 0; j--)
-			{
-				start = j+arr[i];
-				if(start > 0){
-					board[j][i] = board[start][i];
-					judge[j][i] = board[j][i] != '.' ? 1 : 0;
-				}
-				else {
-					board[j][i] = '.';
-					judge[j][i] = 0;
-				}
+			while(cursor > 0 && board[cursor][i] == 'X'){
+				cursor= cursor - 1;
+				isDel = true;
 			}
+			if(cursor >= 0){
+				board[j][i] = board[cursor][i];
+				judge[j][i] = judge[cursor][i];
+			}
+			else {
+				board[j][i] = '.';
+				judge[j][i] = 0;
+			}
+			cursor--;
 		}
 	}
 
+	if(isDel) return 1;
+	else return 0;
 }
+
 int bfs(int x, int y)
 {
 	char ch = board[x][y];
 	queue<pair<int, int>> Que;
+	queue<pair<int, int>> cache;
+
 	Que.push(make_pair(x, y));
 
 	int dx, dy;
@@ -64,22 +65,28 @@ int bfs(int x, int y)
 		if(dx < 0 || dy < 0 || dx >= 12 || dy >= 6 || visited[dx][dy] || board[dx][dy] != ch || !judge[dx][dy]) continue;
 
 		visited[dx][dy] = 1;
-		arr[dy] = dx > x? arr[dy] + 1 : arr[dy] - 1;
-		cnt++;
-		
+		cache.push(make_pair(dx,dy));
+
 		Que.push(make_pair(dx+1, dy));
 		Que.push(make_pair(dx, dy+1));
 		Que.push(make_pair(dx-1, dy));
 		Que.push(make_pair(dx, dy-1));
 	}
-	
-	memset(visited, 0, sizeof(visited));
+
+	cnt = cache.size();
+	if(cache.size() >= 4)
+	{
+		while(!cache.empty()){
+			board[cache.front().first][cache.front().second] = 'X';
+			cache.pop();
+		}
+	}
+
 	return cnt;
 }
 
 int Play()
 {
-	int cnt;
 
 	for(int i = 11; i > 0; i--)
 	{
@@ -87,19 +94,18 @@ int Play()
 		{
 			if(judge[i][j])
 			{
-				if(bfs(i, j) >= 4)
-				{
-					Update(i, j);
-					cnt++;
-					result++;
-				}
-				memset(arr, 0, sizeof(arr));
+				bfs(i, j);
 			}
 		}
 	}
 
-
-	return cnt;
+	memset(visited, 0, sizeof(visited));
+	if(Update()){
+		result ++;
+		return 1;
+	} 
+	else
+		return 0;
 }
 
 int main()
@@ -117,11 +123,12 @@ int main()
 
 	int cnt = 0;
 
-	while(!cnt)
-		cnt = Play();
+	while(Play())
+		continue;
+	
 	
 
-	print();
+	// print();
 
 	cout << result << endl;
 
