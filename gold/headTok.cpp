@@ -1,6 +1,7 @@
-//#1241
+// #1241
 #include<iostream>
 #define MAX 1000001
+#define endl '\n'
 
 using namespace std;
 int N, board[MAX];
@@ -25,11 +26,13 @@ int main()
 			if(arr[i]%j == 0)
 			{
 				result += board[j];
+				cout << "i index : " << i <<"/" << arr[i] << " j Index : "<< j  <<endl;
 				if(j!=arr[i]/j) result += board[arr[i]/j];
 			}
 		}
 		cout << result-1 << endl;
 	}
+
 	return 0;
 }
 
