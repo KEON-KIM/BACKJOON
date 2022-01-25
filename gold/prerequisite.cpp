@@ -43,7 +43,7 @@ int main()
 	{
 		int prev = Que.front();
 		Que.pop();
-		result.push_back(prev);
+		// result.push_back(prev);
 
 		for(int t : subject[prev]){
 			indegree[t]--;
