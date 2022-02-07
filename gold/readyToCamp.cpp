@@ -1,4 +1,6 @@
 //#16938
+//Algorithm : BackTracking
+
 #include <iostream>
 #include <algorithm>
 
