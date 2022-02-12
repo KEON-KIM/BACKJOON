@@ -4,6 +4,7 @@
 
 #define MAX 12
 #define ALPHA 77
+#define endl '\n'
 #define FOR(i, n) for(int i = 0; i < n; i++)
 using namespace std;
 
@@ -19,18 +20,20 @@ string draw[6] = { "....x....",
 
 bool isTrue()
 {
-	return ((board[1] + board[2] + board[3] + board[4]) ==
-		(board[0] + board[2] + board[5] + board[7]) ==
-		(board[0] + board[3] + board[6] + board[10]) ==
-		(board[7] + board[8] + board[9] + board[10]) ==
-		(board[1] + board[5] + board[8] + board[11]) ==
-		(board[4] + board[6] + board[9] + board[11]));
+	int cmp  = (board[1] + board[2] + board[3] + board[4]);
+	if (cmp != board[0] + board[2] + board[5] + board[7] || 
+		cmp != board[0] + board[3] + board[6] + board[10] ||
+		cmp != board[7] + board[8] + board[9] + board[10] ||
+		cmp != board[1] + board[5] + board[8] + board[11] ||
+		cmp != board[4] + board[6] + board[9] + board[11]) return false;
+	
+	return true;
 }
 
 void print()
 {
 	int idx = 0;
-	FOR(i, 6)
+	FOR(i, 5)
 	{
 		FOR(j, 9)
 		{
@@ -48,18 +51,14 @@ void print()
 
 void dfs(int index)
 {
-	// cout << "index : " << index << endl;
 	if(index >= MAX)
 	{
-		print();
-		if(isTrue()){
-			cout << "FUCK" << endl;
+		if(isTrue())
 			flag = true;
-		}
 		return;
 	}
 
-	if(board[index] < 120){
+	if(board[index] != 120){
 		dfs(index+1);
 	}
 	for(int i = 65; i < 77; i++)
@@ -69,12 +68,11 @@ void dfs(int index)
 			board[index] = i;
 			visited[i] = true;
 			dfs(index+1);
+			if(flag) return;
 			visited[i] = false;
 			board[index] = origin[index];
 		}
-		if(flag) return;
 	}
-
 }	
 
 int main()
@@ -94,18 +92,12 @@ int main()
 			}
 	}
 
-	for(int i : origin)
-		cout << i << " ";
-	cout << endl;
 	FOR(i, MAX)
 	{
 		if(board[i] == 120){
 			for(int j = ALPHA-12; j < ALPHA; j++)
 			{
 				if(!visited[j]){
-					for(int i : origin)
-						cout << i << " ";
-					cout << endl;
 					visited[j] = true;
 					board[i] = j;
 					dfs(i+1);
@@ -117,10 +109,8 @@ int main()
 					board[i] = origin[i];
 				}
 			}
-			break;
 		}
 	}
-	cout << "end" << endl;
 
 	return 0;
 }
