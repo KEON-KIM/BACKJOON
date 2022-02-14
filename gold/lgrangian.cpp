@@ -32,16 +32,6 @@ int main() {
         cout << cnt << "\n";
     }
 }
-/*void Init()
-{
-	int n = 1;
-	int inf = pow(2, 15);
-	while(pow(n,2) < inf){
-		board.push_back(pow(n,2));
-		n++;
-	}
-	sort(board, board + n);
-}*/
 /*
 void dfs(int depth, int dest)
 {
