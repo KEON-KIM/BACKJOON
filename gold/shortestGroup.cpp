@@ -1,3 +1,4 @@
+// #18813
 #include<iostream>
 #include<vector>
 #include<string>
@@ -5,7 +6,6 @@
 using namespace std;
 
 int arr[1001], n, k; 
-
 void INPUT()
 {
 	cin >> n >> k;
