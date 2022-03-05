@@ -59,7 +59,7 @@ int solution(vector<string> &str)
 			B = stoi(str[pivot]);
 			b = str[pivot][0] - '0';
 			len = str[pivot].size();
-
+			
 			if(A + B < A*10 + b + B - b*pow(10,len-1))
 				pivot--;
 
@@ -69,6 +69,7 @@ int solution(vector<string> &str)
 				str[pivot] = str[pivot].substr(1);
 				min_sum = min(sumCal(str), min_sum);
 			}
+			
 			for(int i = 0; i < str.size(); i++)
 				cout << str[i] << ", ";
 			cout << min_sum << endl;
