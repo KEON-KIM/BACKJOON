@@ -1,7 +1,6 @@
 // #1153
 // @Reference <https://sgc109.tistory.com/206>
 #include <iostream>
-#define pb push_back
 #define MAX 1000003
 using namespace std;
 
