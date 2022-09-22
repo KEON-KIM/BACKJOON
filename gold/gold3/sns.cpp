@@ -10,41 +10,64 @@
 using namespace std;
 
 int N, INF;
-int dp[MAX];
-bool isAdapter[MAX];
+int dp[MAX][2];
+bool visited[MAX];
 vector<int> graph[MAX];
-int dfs(int n)
+vector<int> Tree[MAX];
+int dfs(int cur, bool state)
 {
-	int &ref = dp[n];
-	bool flag = false;
-	if(ref != INF) return ref;
-	if(!graph[n].size()) return 0;
-
-	int tmp = 0;
-	FOR(i, graph[n].size())
+	int &ref = dp[cur][state];
+	if(ref != -1) return ref;
+	if(state)
 	{
-		int k = dfs(graph[n][i]);
-		if(isAdapter[graph[n][i]]) flag = true;
-		tmp += k;
+		ref = 1;
+		FOR(i, Tree[cur].size())
+		{
+			int next = Tree[cur][i];
+			ref += min(dfs(next, 0), dfs(next, 1));
+		}
+	}
+	else
+	{
+		ref = 0;
+		FOR(i, Tree[cur].size())
+		{
+			int next = Tree[cur][i];
+			ref += dfs(next, 1);
+		}
 	}
 
-	ref = tmp;
-	if(!flag) {isAdapter[n] = true; ref+=1;}
 	return ref;
 }
+
+void make_tree(int cur)
+{
+	visited[cur] = true;
+	FOR(i, graph[cur].size())
+	{
+		int next = graph[cur][i];
+		if(!visited[next])
+		{
+			Tree[cur].push_back(next);
+			make_tree(next);
+		}
+	}
+}
+
 int main()
 {
 	fastio;
 	int s, e;
 	cin >> N;
+
 	FOR(i, N-1)
 	{
 		cin >> s >> e;
 		graph[s].push_back(e);
+		graph[e].push_back(s);
 	}
-	memset(dp, 0x3f, sizeof(dp));
-	INF = dp[0];
-
-	cout << dfs(1);
+	memset(dp, -1, sizeof(dp));
+	make_tree(1); 
+	cout << min(dfs(1, 0), dfs(1, 1));
 	return 0;
 }
