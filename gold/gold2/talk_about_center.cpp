@@ -10,6 +10,7 @@
 #define fastio ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 typedef long long ll;
+
 using namespace std;
 
 int main()
@@ -18,7 +19,7 @@ int main()
 	int N, input;
 	priority_queue<int> asc_pQue;
 	priority_queue<int, vector<int>, greater<int>> desc_pQue;
-	
+
 	cin >> N;
 	FOR(i, N)
 	{
