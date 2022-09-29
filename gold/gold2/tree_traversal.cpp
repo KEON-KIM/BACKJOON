@@ -1,4 +1,5 @@
 //#2263
+//@Reference donggoolosori <https://donggoolosori.github.io/2020/10/15/boj-2263/>
 #include <iostream>
 #include <cstring>
 #include <vector>
