@@ -93,7 +93,7 @@ int main()
 						int move = abs(shark.s - x + 1) % (R - 1);
 						if(shark.d == 1) // 음의 방향
 						{
-							int rot = (shark.s - x) > 0 ? ((shark.s - x + 1)/(R-1)) + 1 : 0;
+							int rot = (shark.s - x) >= 0 ? ((shark.s - x + 1)/(R-1)) + 1 : 0;
 							if(!rot)
 							{
 								dx = x - shark.s;
@@ -109,6 +109,7 @@ int main()
 
 						else // 양의 방향
 						{
+							int move = abs(shark.s + x - 1) % (R - 1);
 							int rot = (shark.s + x) > R ? (x + shark.s - 1) / (R - 1) : 0;
 							if(!rot)
 							{
@@ -126,10 +127,10 @@ int main()
 					}
 					else // C
 					{
-						int move = abs(shark.s - y + 1) % (C - 1);
 						if(shark.d == 4) // 음의 방향
 						{
-							int rot = (shark.s - y) > 0 ? ((shark.s - y + 1)/(C-1)) + 1 : 0;
+							int move = abs(shark.s - y + 1) % (C - 1);
+							int rot = (shark.s - y) >= 0 ? ((shark.s - y + 1)/(C-1)) + 1 : 0;
 							if(!rot)
 							{
 								dy = y - shark.s;
@@ -145,6 +146,7 @@ int main()
 
 						else // 양의 방향
 						{
+							int move = abs(shark.s + y - 1) % (C - 1);
 							int rot = (shark.s + y) > C ? (y + shark.s - 1) / (C - 1) : 0;
 							if (!rot)
 							{
