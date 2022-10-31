@@ -1,5 +1,4 @@
 //#1949
-
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -44,7 +43,7 @@ int main()
    	{
         cin >> u >> v;
         graph[u-1].push_back(v-1);
-        tree[v-1].push_back(u-1);
+        graph[v-1].push_back(u-1);
     }
 
     dfs(0);
